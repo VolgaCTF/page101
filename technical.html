@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>VolgaCTF Final Regulations</title>
+
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/sticky-footer.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <main role="main" class="container mb-5">
+      <h1 class="mt-5">VolgaCTF Final &ndash; Technical information</h1>
+
+      <h2 class="mt-4">Network</h2>
+      <p>Each team's network segment has the following address: <code>172.29.N.0/24</code>, where <strong>N</strong> stands for a team's number.</p>
+      <p>Vulnbox instance <strong>MUST</strong> have the following address: <code>172.29.N.3</code>.</p>
+      <p>Scoreboard URL (intranet): <a href="http://final.2018.volgactf.ru/scoreboard" target="_blank" rel="noopener">final.2018.volgactf.ru/scoreboard</a></p>
+      <p>Scoreboard URL (public): <a href="https://live.volgactf.ru/scoreboard" target="_blank" rel="noopener">live.volgactf.ru/scoreboard</a></p>
+
+      <h2 class="mt-4">Virtual machine image</h2>
+      <p style="font-variant: small-caps;">before launching the vulnbox, do not forget to regenerate your virtual machine instance mac address!</p>
+      <p>A vulnbox is based on Ubuntu 16.04 x64 Server, all services are isolated from each other by the means of LXD. Containers start at boot.</p>
+
+      <h3 class="mt-3">Services</h3>
+      <p>
+        Each service is located in a home directory of a container's default user account. Managing a service is simple:<br>
+        <code>$ systemctl stop &lt;SERVICE_NAME&gt;</code><br>
+        <code>$ systemctl stop &lt;SERVICE_NAME&gt;</code>
+      </p>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">© 2018 VolgaCTF</span>
+      </div>
+    </footer>
+</body></html>
