@@ -30,7 +30,16 @@
         A <strong>service</strong> is a program or a set of programs which implements some functions and interacts with ACS by the means of some protocol.
       </p>
       <p>
-        A service <strong>state</strong> is considered UP when a service fully implements its basic functions and correctly interacts with ACS.
+        A service <strong>state</strong> is considered <strong>UP</strong> when a service fully implements its basic functions and correctly interacts with ACS.
+      </p>
+      <p>
+        A service state is considered <strong>DOWN</strong> when a service is not reachable within the game network.
+      </p>
+      <p>
+        A service state is considered <strong>MUMBLE</strong> when a service does not fully implement its functions and/or does not comply with the communication protocol (ACS ⟷ service).
+      </p>
+      <p>
+        A service state is considered <strong>CORRUPT</strong> when a service returns unexpected data (e.g. a wrong flag) <strong>although</strong> fully implementing its functions and being in compliance with the communication protocol (ACS ⟷ service).
       </p>
       <p>
         The performance of each service is evaluated by three parameters: defence, availability and attack.
