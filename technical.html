@@ -32,6 +32,31 @@
       <p style="font-variant: small-caps;">before launching the vulnbox, do not forget to regenerate your virtual machine instance mac address!</p>
       <p>A vulnbox is based on Ubuntu 16.04 x64 Server, all services are isolated from each other by the means of LXD. Containers start at boot.</p>
 
+      <h3 class="mt-3">LXC</h3>
+      <p>
+        All​ ​commands​ ​below​ ​should​ ​be​ ​performed​ ​on​ ​behalf​ ​of​ ​root​ ​user.
+      </p>
+      <p>
+        List​ ​containers<br>
+        <code>$​ ​lxc list</code>
+      </p>
+      <p>
+        By​ ​default​ ​all​ ​containers​ ​will​ ​be​ ​"running".​ ​To​ ​stop​ ​a​ ​container,​ ​run<br>
+        <code>$​ ​lxc stop​ ​​&lt;CONTAINER_NAME&gt;</code>
+      </p>
+      <p>
+        Starting​ ​a​ ​container<br>
+        <code>$​ ​lxc start​ ​​&lt;CONTAINER-NAME&gt;</code>
+      </p>
+      <p>
+        Access​ ​a​ ​container's​ ​console<br>
+        <code>$​ ​lxc exec &lt;CONTAINER_NAME&gt; -- /bin/bash</code>
+      </p>
+      <p>
+        Exit​ ​a​ ​container's​ ​console<br>
+        <code>Ctrl​ ​+​ ​D</code>
+      </p>
+
       <h3 class="mt-3">Services</h3>
       <p>
         Each service is located in a home directory of a container's default user account. Managing a service is simple:<br>
