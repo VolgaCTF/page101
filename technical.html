@@ -14,13 +14,21 @@
     <main role="main" class="container mb-5">
       <h1 class="mt-5">VolgaCTF Final &ndash; Technical information</h1>
 
-      <h2 class="mt-4">Network</h2>
+      <ul class="lead">
+        <li><a href="#network">Network</a></li>
+        <li><a href="#virtual-machine-image">Virtual machine image</a></li>
+        <li><a href="#flag-signatures">Flag​ ​signatures</a></li>
+        <li><a href="#submitting-flags​">Submitting​ ​flags</a></li>
+        <li><a href="#an-insight-into-acs">An​ ​insight​ ​into​ ​ACS</a></li>
+      </ul>
+
+      <h2 id="network" class="mt-4">Network</h2>
       <p>Each team's network segment has the following address: <code>172.29.N.0/24</code>, where <strong>N</strong> stands for a team's number.</p>
       <p>Vulnbox instance <strong>MUST</strong> have the following address: <code>172.29.N.3</code>.</p>
       <p>Scoreboard URL (intranet): <a href="http://final.2018.volgactf.ru/scoreboard" target="_blank" rel="noopener">final.2018.volgactf.ru/scoreboard</a></p>
       <p>Scoreboard URL (public): <a href="https://live.volgactf.ru/scoreboard" target="_blank" rel="noopener">live.volgactf.ru/scoreboard</a></p>
 
-      <h2 class="mt-4">Virtual machine image</h2>
+      <h2 id="virtual-machine-image" class="mt-4">Virtual machine image</h2>
       <p style="font-variant: small-caps;">before launching the vulnbox, do not forget to regenerate your virtual machine instance mac address!</p>
       <p>A vulnbox is based on Ubuntu 16.04 x64 Server, all services are isolated from each other by the means of LXD. Containers start at boot.</p>
 
@@ -29,6 +37,107 @@
         Each service is located in a home directory of a container's default user account. Managing a service is simple:<br>
         <code>$ systemctl stop &lt;SERVICE_NAME&gt;</code><br>
         <code>$ systemctl stop &lt;SERVICE_NAME&gt;</code>
+      </p>
+
+      <h2 id="flag-signatures" class="mt-4">Flag​ ​signatures</h3>
+      <p>
+        Flags are stored and transported into so-called ​capsules​. A capsule looks​ ​like​ ​this:
+        <code>
+          VolgaCTF{eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJmbGFnIjoiYzA4ODI0NjI2MjNkNjFmM2VlYzgwYjcyY2ZlNDQ3NjkifQ.YqcT52o3_S9XhjE6txPayJ-iylCHhpQs4SzfnCwKKsP3_XGol30GQVWf9QZ85RaO4l5uXVOgrkF335UIDn7x4A}
+        </code>
+      </p>
+
+      <p>
+        Data between ​<code>VolgaCTF{</code> and <code>​}</code> is a <a href="https://jwt.io" target="_blank" rel="noopener">​JSON Web Token</a> signed using ES256 algorithm. You will need ​ACS <a href="http://final.2018.volgactf.ru/api/capsule/v1/public_key" target="_blank" rel="noopener">public key</a> to decode a capsule and​ ​obtain​ ​a​ ​flag​ ​from​ ​it.​ ​Flag​ ​format​ ​is​ ​​<code>^[\da-f]{32}=$</code>.
+      </p>
+
+      <p>
+        <details>
+          <summary>Public key (for the sample capsule)</summary>
+          <code>
+            -----BEGIN PUBLIC KEY-----
+            MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5aiazVMn0K9M0PyP4/iGZpKKqYez\n+6rCzO8iUjfkVvH87KcccPfNzv2olMtrFvF1bTLBAchFfDiNqewauTe/GA==
+            -----END PUBLIC KEY-----
+          </code>
+        </details>
+      </p>
+
+      <h2 id="submitting-flags​" class="mt-4">Submitting​ ​flags</h3>
+      <p>
+        You should submit flags (not capsules!) to <code>final.2018.volgactf.ru</code>. Each flag lives for 6 minutes.
+      </p>
+      <ol>
+        <li>
+          New API (as of June 2018):
+          <ul>
+            <li><a href="https://github.com/themis-project/themis-finals-api" target="_blank" rel="noopener">Themis Finals API</a> &nbsp; public APIs description</li>
+            <li><a href="https://github.com/themis-project/themis-finals-py" target="_blank" rel="noopener">themis.finals</a> &nbsp; CLI & public API library for Python 2 & 3</li>
+          </ul>
+          <p class="mt-2">getinfo rate limit 10 r/s, submit rate limit 5 r/s</p>
+        </li>
+        <li>
+          <strong>[deprecated]</strong> Old API (to be removed in 2019):
+          <ul>
+            <li><a href="https://github.com/themis-project/themis-finals-attack-protocol" target="_blank" rel="noopener">Themis Finals Attack Protocol &nbsp; attack protocol</li>
+            <li><a href="https://github.com/themis-project/themis-finals-attack-helper-py" target="_blank" rel="noopener">themis.finals.attack.helper</a> &nbsp; attack helper library for Python 2 & 3</li>
+          </ul>
+          <p class="mt-2">submit rate limit &nbsp; 200 attacks in a 60-second period</p>
+        </li>
+      </ol>
+
+      <h2 id="an-insight-into-acs" class="mt-4">An​ ​insight​ ​into​ ​ACS</h2>
+      <p>
+        A​ ​game​ ​is​ ​divided​ ​in​ ​2-minute​ ​rounds.
+      </p>
+      <p>
+        When a new round is triggered, ACS tries to push flags (transported in capsules) to every service of every team. If a push attempt of a flag is successful, this particular flag is marked as ​<strong>active</strong>​. ACS immediately tries to pull <strong>active</strong> flags.
+      </p>
+      <p>
+        Every flag expires 6 minutes​ ​after​ ​it​ ​has​ ​been​ ​marked​ ​as​ <strong>a​​ctive</strong>​.
+      </p>
+      <p>
+        Additionally, ​in each round ACS​ launches 3 <strong>polls</strong>: it ​pulls​ ​one ​randomly​ ​chosen​ ​​<strong>active</strong>​ ​​flag from each service from each team.
+      </p>
+      <p>
+        Scores are updated when all <strong>active</strong> flags issued in a particular round become <strong>expired</strong>.
+      </p>
+
+      <h3 class="mt-3">Availability</h3>
+      <p>
+        1 point for ​<strong>availability</strong> ​(AP<sub​>flag</sub​>)​ is given if all attempts to pull a flag were successful (<strong>​UP</strong> state). Otherwise, a fraction of a point is given according to​ ​the​ ​equation:
+      </p>
+      <p>
+        AP<sub>​flag</sub>​​ ​=​ ​SPA<sub>​flag</sub>​​ ​/​ ​TPA<sub>​flag</sub>,
+      </p>
+      <p>
+        where SPA stands for the number of successful pull attempts and TPA stands​ ​for​ ​the​ ​total​ ​number​ ​of​ ​pull​ ​attempts.
+      </p>
+
+      <h3 class="mt-3">Defence</h3>
+      <p>
+        By default, no defence points for flags from a service are given.
+      </p>
+      <p>
+        Points are to be awarded starting from the next round a service is attacked by any team. 1 point for ​<strong>defence</strong> ​(DP<sub>f​lag</sub>)​ is given if ​<strong>all</strong> attempts to pull a flag were successful and no-one has stolen and submitted this particular flag into ACS.
+      </p>
+
+      <h3 class="mt-3">Attack</h3>
+      <p>
+        1​ ​point​ ​for​ ​​attack​ ​​is​ ​given​ ​for​ ​each​ ​stolen​ ​flag.
+      </p>
+      <p>
+        A team ​cannot ​submit a flag stolen from a service <strong>X</strong> if a state of a service​ <strong>​X</strong>​ ​in​ ​their​ ​vulnbox​ ​is​ ​not​ ​​<strong>UP</strong>​.
+      </p>
+
+      <h3 class="mt-3">Total</h3>
+      <p>
+        Total​ ​team​ ​score​ ​(TtS)​ ​is​ ​calculated​ ​as a sum of total scores (tS) in each category:
+      </p>
+      <p>
+        TtS​ ​=​ ​tS<sub>​attack</sub>​​ ​+​ ​tS<sub>​defence</sub>​​ ​+​ tS<sub>​availability</sub>​
+      </p>
+      <p>
+        In case of equal TtS a team who performed the last attack before the other​ ​team​ ​is​ ​placed​ ​higher​ ​in​ ​the​ ​scoreboard.
       </p>
     </main>
 
